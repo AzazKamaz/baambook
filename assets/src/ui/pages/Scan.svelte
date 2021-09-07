@@ -38,29 +38,4 @@
   .grow {
     flex-grow: 1;
   }
-
-  .qr {
-    text-align: center;
-    width: 100%;
-    /* display: contents; */
-    /* width: min(100%, 30rem); */
-    /* height: 100%; */
-    /* background-position: center; */
-    /* background-size: contain; */
-    /* background-repeat: no-repeat; */
-  }
-
-  .qr > img {
-    width: min(100%, 30rem);
-    height: auto;
-  }
-
-  .qr > span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-transform: uppercase;
-    font-size: 2em;
-  }
 </style>

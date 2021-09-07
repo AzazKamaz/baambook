@@ -13,10 +13,10 @@ COPY mix.exs mix.lock ./
 RUN mix do deps.get, deps.compile
 
 COPY assets/package.json assets/package-lock.json ./assets/
-RUN mix do assets.deps.get
+RUN mix assets.deps.get
 
 COPY assets assets
-RUN mix do assets.compile
+RUN mix assets.compile
 
 COPY config config
 RUN mix phx.digest
@@ -26,17 +26,24 @@ RUN mix do compile, release
 
 
 
-FROM alpine:3.9
+FROM elixir:1.12-alpine
 RUN apk add --no-cache openssl ncurses-libs
 
 WORKDIR /app
+ENV PATH="/app:${PATH}"
 
 RUN chown nobody:nobody /app
 
+RUN printf "#!/bin/sh\nset -xe\n./baambook/bin/baambook start" > ./start
+RUN printf "#!/bin/sh\nset -xe\n./baambook/bin/baambook rpc $@" > ./rpc
+RUN printf "#!/bin/sh\nset -xe\n./baambook/bin/baambook remote" > ./remote
+RUN chmod +x ./start ./rpc ./remote
+
 USER nobody:nobody
 
-COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/baambook ./
+COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/baambook ./baambook/
 
 ENV HOME=/app
 
-CMD ["bin/baambook", "start"]
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["start"]
