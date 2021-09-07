@@ -2,6 +2,13 @@ defmodule BaambookWeb.RoomChannel do
   use Phoenix.Channel
   require Baambook.Storage
 
+  # Explicitly join to random without touching storage
+  # Explicitly disallow sending updates
+  @impl true
+  def join("room:random", %{}, socket) do
+    {:ok, socket}
+  end
+
   @impl true
   def join("room:" <> room_id, %{"token" => token}, socket) do
     case Baambook.Storage.initiate(room_id, token) do
@@ -25,6 +32,12 @@ defmodule BaambookWeb.RoomChannel do
   def handle_info(:after_join, %{:topic => "room:" <> room_id} = socket) do
     reply = %{"data" => Baambook.Storage.get(room_id)}
     push(socket, "init", reply)
+    {:noreply, socket}
+  end
+
+  def handle_info(%{type: "update", data: data}, socket) do
+    reply = %{"data" => data}
+    push(socket, "update", reply)
     {:noreply, socket}
   end
 

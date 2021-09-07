@@ -24,3 +24,41 @@ export function qr64(data?: string) {
   const svg = data ? SvgQr(data, opts) : generateSvg(qrMock(), opts);
   return `data:image/svg+xml;base64,${encode(svg)}`;
 }
+
+export class PqrsWorker {
+  worker: Worker;
+  nextId: number;
+  promises: Map<number, {resolve: (any) => void, reject: (any) => void}>;
+
+  constructor() {
+    this.worker = new Worker('/worker.js');
+    this.nextId = 0;
+    this.promises = new Map();
+    this.worker.onmessage = ({data: {id, result, error}}) => {
+      const promise = this.promises.get(id);
+      if (promise) {
+        this.promises.delete(id);
+        if (!error) {
+          promise.resolve(result);
+        } else {
+          promise.reject(error);
+        }
+      }
+    };
+  }
+
+  call(...params: [any]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const id = this.nextId++;
+      this.promises.set(id, {resolve, reject});
+      this.worker.postMessage({id, params});
+    })
+  }
+
+  terminate() {
+    this.worker.terminate();
+    delete this.worker;
+    delete this.nextId;
+    delete this.promises;
+  }
+}

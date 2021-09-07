@@ -11,7 +11,8 @@ defmodule Baambook.Application do
     children = [
       BaambookWeb.Telemetry,
       {Phoenix.PubSub, name: Baambook.PubSub},
-      BaambookWeb.Endpoint
+      BaambookWeb.Endpoint,
+      Baambook.Random
     ]
 
     opts = [strategy: :one_for_one, name: Baambook.Supervisor]

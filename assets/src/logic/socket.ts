@@ -68,4 +68,3 @@ export function update(upd: string) {
       .receive("error", (reasons) => console.log("Update failed", reasons));
   }
 }
-
