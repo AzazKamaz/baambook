@@ -33,13 +33,19 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  :global(body) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   main {
-    width: calc(100% - 2*min(1rem, 5vw));
-    min-height: calc(100% - 2*min(1rem, 5vw));
-    padding: min(1rem, 5vw);
-    margin: 0 auto;
+    flex-grow: 1;
+    /* padding: min(1rem, 5vw); */
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,6 +64,6 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 </style>

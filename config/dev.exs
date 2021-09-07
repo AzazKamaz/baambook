@@ -7,7 +7,9 @@ config :baambook, BaambookWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    mix: ["do", "assets.watch"]
+    # Warning: directly execute mix task or use raw npm/node/etc
+    # If running child elixir it will not exit at stdin EOF
+    assets: {Mix.Task, :run, ["assets.watch"]}
   ]
 
 # ## SSL Support

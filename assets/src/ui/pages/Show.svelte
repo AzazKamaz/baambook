@@ -19,7 +19,7 @@
 
   <div class="qr">
     <img src={qr} style="opacity: {data ? 1 : 0.3}" alt={data}/>
-    {#if data === null}
+    {#if data === null || data === undefined}
       <span>No data yet</span>
     {/if}
   </div>
@@ -39,14 +39,13 @@
   }
 
   .qr {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     width: 100%;
-    /* display: contents; */
-    /* width: min(100%, 30rem); */
-    /* height: 100%; */
-    /* background-position: center; */
-    /* background-size: contain; */
-    /* background-repeat: no-repeat; */
+    position: relative;
+    margin: 2rem 0;
   }
 
   .qr > img {
@@ -60,6 +59,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-transform: uppercase;
-    font-size: 2em;
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    text-align: center;
   }
 </style>
