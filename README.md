@@ -5,9 +5,10 @@ The **baambook** is an application to share QR codes to other people using live 
 ## Contents
 
 - [baambook](#baambook)
-  * [Contents](#contents)
-  * [Artifact](#artifact)
-  * [Authors](#authors)
+  - [Contents](#contents)
+  - [Artifact](#artifact)
+  - [Authors](#authors)
+  - [License](#license)
 
 ## Artifact
 
@@ -19,3 +20,7 @@ You can see artifact using the [link](https://docs.google.com/document/d/12yv60P
 - Igor Belov
 - Mark Nicholson
 - Kseniya Kudasheva
+
+## License
+
+**baambook** is available under the private license. See the LICENSE file for more info.
