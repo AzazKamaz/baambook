@@ -29,7 +29,7 @@ export function qr64(data?: string) {
   const svgPath = svgPathEl.attributes.getNamedItem("d").value;
 
   return {
-    viewBox: svgViewBox.split(' ').map(Number),
+    viewBox: svgViewBox,
     path: svgPath,
   };
 }
