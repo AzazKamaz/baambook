@@ -1,8 +1,7 @@
 <script lang="ts">
-  import logo from '../assets/logo.svg';
   import { route } from '../logic/route';
-  import { data } from '../logic/socket';
 
+  import Logo from './Logo.svelte';
   import ScanPage from './pages/Scan.svelte';
   import ShowPage from './pages/Show.svelte';
 
@@ -11,7 +10,7 @@
 </script>
 
 <main>
-  <div class="logo" style="background-image: url({logo});"></div>
+  <Logo></Logo>
   <div class="page">
     {#if page == 'index'}
       <h1>Index page</h1>
@@ -44,19 +43,10 @@
 
   main {
     flex-grow: 1;
-    /* padding: min(1rem, 5vw); */
     padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  .logo {
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 90%;
-    height: min(3rem, 10vw);
   }
 
   .page {
