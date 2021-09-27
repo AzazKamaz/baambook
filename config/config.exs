@@ -12,6 +12,6 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :phoenix, :json_library, Jason
-config :phoenix, :gzippable_exts, ~w(.js .css .txt .text .html .json .svg .eot .ttf .wasm .map)
+config :phoenix, :gzippable_exts, ~w(.js .css .txt .text .html .json .svg .eot .ttf .woff .wasm .map)
 
 import_config "#{config_env()}.exs"
