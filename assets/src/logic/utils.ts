@@ -1,6 +1,5 @@
 import SvgQr from 'svgqr.js';
 import { generateSvg } from 'svgqr.js/lib/svg.js';
-import { encode } from 'js-base64';
 
 function qrMock() {
   const size = 25;
@@ -19,10 +18,20 @@ function qrMock() {
 export function qr64(data?: string) {
   const opts = {
     corners: 'Rounded',
-    radius: 0.8,
+    radius: 0.875,
   };
   const svg = data ? SvgQr(data, opts) : generateSvg(qrMock(), opts);
-  return `data:image/svg+xml;base64,${encode(svg)}`;
+
+  const svgDoc = new DOMParser().parseFromString(svg, "image/svg+xml");
+  const svgEl = svgDoc.querySelector("svg") as SVGElement;
+  const svgViewBox = svgEl.attributes.getNamedItem("viewBox").value;
+  const svgPathEl = svgDoc.querySelector("svg > path") as SVGPathElement;
+  const svgPath = svgPathEl.attributes.getNamedItem("d").value;
+
+  return {
+    viewBox: svgViewBox.split(' ').map(Number),
+    path: svgPath,
+  };
 }
 
 export class PqrsWorker {
