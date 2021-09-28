@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { nanoid } from 'nanoid/index.prod';
+
   import { route } from '../logic/route';
 
   import Logo from './components/Logo.svelte';
@@ -7,13 +9,28 @@
 
   let page: string;
   $: page = $route.page;
+
+  function startSession() {
+    const id = encodeURIComponent(nanoid());
+    const key = encodeURIComponent(nanoid());
+    const token = encodeURIComponent(nanoid());
+    document.location.hash = `id=${id}&key=${key}&token=${token}`;
+  }
 </script>
 
 <main>
   <Logo></Logo>
+  <div class="grow"></div>
+
   <div class="page">
     {#if page == 'index'}
-      <h1>Index page</h1>
+      <h3>
+        Start a session to share live QR Code:<br>
+        <button on:click={startSession}>Start session</button>
+      </h3>
+      <h3>
+        Or open some shared link to join as a viewer
+      </h3>
     {/if}
     {#if page == 'scan'}
       <ScanPage/>
@@ -22,6 +39,8 @@
       <ShowPage/>
     {/if}
   </div>
+
+  <div class="grow"></div>
 </main>
 
 <style>
@@ -47,6 +66,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+  }
+
+  .grow {
+    flex-grow: 1;
   }
 
   .page {
@@ -55,5 +79,35 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+  }
+
+  button {
+    display: inline-block;
+    padding: 0.2em 1.45em;
+    margin: 0.1em;
+    border: 0.15em solid #CCCCCC;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Segoe UI','Roboto',sans-serif;
+    font-weight: 400;
+    color: #000000;
+    background-color: #CCCCCC;
+    text-align: center;
+    position: relative;
+  }
+
+  button:hover {
+    border-color: #7a7a7a;
+  }
+
+  button:active {
+    background-color: #999999;
+  }
+
+  @media all and (max-width:30em){
+    button {
+      display: block;
+      margin: 0.2em auto;
+    }
   }
 </style>

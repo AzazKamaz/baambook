@@ -1,5 +1,6 @@
 import SvgQr from 'svgqr.js';
 import { generateSvg } from 'svgqr.js/lib/svg.js';
+import type { Route } from './types';
 
 function qrMock() {
   const size = 25;
@@ -47,6 +48,12 @@ export function isInPoly(point: number[], polygon: number[][]): boolean {
   } catch (e) {
     return false;
   }
+}
+
+export function getViewLink(route: Route): string {
+  let url = new URL(document.URL);
+  url.hash = `id=${encodeURIComponent(route.id)}&key=${encodeURIComponent(route.key)}`;
+  return url.href;
 }
 
 export class PqrsWorker {
