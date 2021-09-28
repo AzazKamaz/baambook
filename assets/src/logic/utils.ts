@@ -34,6 +34,21 @@ export function qr64(data?: string) {
   };
 }
 
+export function isInPoly(point: number[], polygon: number[][]): boolean {
+  try {
+    const [xc, yc] = point;
+    let acc = 0;
+    for (let i = 0; i < polygon.length; i++) {
+      const [x1, y1] = polygon[i];
+      const [x2, y2] = polygon[(i + 1) % polygon.length];
+      acc += Math.sign((x2 - x1) * (yc - y1) - (xc - x1) * (y2 - y1));
+    }
+    return acc == polygon.length;
+  } catch (e) {
+    return false;
+  }
+}
+
 export class PqrsWorker {
   worker: Worker;
   nextId: number;

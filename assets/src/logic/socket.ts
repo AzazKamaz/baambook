@@ -26,7 +26,7 @@ route.subscribe((route: Route) => {
 
   if (active) {
     const topic = `room:${route.id}`;
-    
+
     if (channel && (channel.topic !== topic || channel.params.token !== route.token)) {
       channel.off('update');
       channel.off('init');
@@ -62,7 +62,6 @@ route.subscribe((route: Route) => {
 
 export function update(upd: string) {
   if (get(data).status === 'connected') {
-    data.set({status: 'connected', data: upd});
     channel.push("update", {data: upd})
       .receive("ok", (msg : {data: string | null}) => {
         console.log("Update success", msg);
