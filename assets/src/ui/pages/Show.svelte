@@ -13,8 +13,6 @@
 </script>
 
 <main>
-  <div class="grow"></div>
-
   <div class="qr">
     <svg viewBox={qr.viewBox} opacity={data ? 1 : 0.3}>
       <title>{data}</title>
@@ -26,17 +24,11 @@
   </div>
 
   <h3>Status: {status}</h3>
-
-  <div class="grow"></div>
 </main>
 
 <style>
   main {
     display: contents;
-  }
-
-  .grow {
-    flex-grow: 1;
   }
 
   .qr {
@@ -61,9 +53,5 @@
     transform: translate(-50%, -50%);
     text-transform: uppercase;
     font-size: 1.5rem;
-  }
-
-  h3 {
-    text-align: center;
   }
 </style>

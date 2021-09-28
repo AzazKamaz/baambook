@@ -2,7 +2,8 @@
   import { onMount, onDestroy } from 'svelte';
 
   import { data as datastore, update as commitdata } from '../../logic/socket';
-  import { isInPoly, PqrsWorker } from '../../logic/utils';
+  import { route } from '../../logic/route';
+  import { getViewLink, isInPoly, PqrsWorker } from '../../logic/utils';
   import EmptyQr from '../components/EmptyQr.svelte';
 
   let status: string;
@@ -79,7 +80,11 @@
 </script>
 
 <main>
-  <div class="grow"></div>
+  <h3>
+    Share <a href={getViewLink($route)}>this link</a> with viewers
+    <br>
+    Save this page link to restart session
+  </h3>
 
   <div class="qr">
     {#await streamPromise}
@@ -93,17 +98,11 @@
   </div>
 
   <h3>Status: {status}{#if data}, {#if $datastore.data === data}synced{:else}syncing{/if}{/if}</h3>
-
-  <div class="grow"></div>
 </main>
 
 <style>
   main {
     display: contents;
-  }
-
-  .grow {
-    flex-grow: 1;
   }
 
   .qr {
@@ -120,9 +119,5 @@
     width: min(100%, 50rem);
     height: auto;
     object-fit: cover;
-  }
-
-  h3 {
-    text-align: center;
   }
 </style>

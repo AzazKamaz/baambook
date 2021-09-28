@@ -1,5 +1,11 @@
+<script lang="ts">
+  function gotoIndex() {
+    document.location.href = '#';
+  }
+</script>
+
 <main>
-  <sup>(ue)</sup>baam<span>book</span>
+  <button on:click={gotoIndex}><sup>(ue)</sup>baam<span>book</span></button>
 </main>
 
 <style>
@@ -22,7 +28,6 @@
   }
 
   main {
-    pointer-events: none;
     text-align: center;
     font-family: 'Noto Sans Display', sans-serif;
     font-weight: 500;
@@ -32,11 +37,11 @@
     line-height: 1em;
   }
 
-  main > span {
+  span {
     font-weight: 200;
   }
 
-  main > sup {
+  sup {
     font-weight: 200;
     vertical-align: super;
     font-size: calc(min(3rem, 10vw) * 0.5);
