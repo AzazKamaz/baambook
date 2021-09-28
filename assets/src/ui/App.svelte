@@ -1,7 +1,7 @@
 <script lang="ts">
   import { route } from '../logic/route';
 
-  import Logo from './Logo.svelte';
+  import Logo from './components/Logo.svelte';
   import ScanPage from './pages/Scan.svelte';
   import ShowPage from './pages/Show.svelte';
 
