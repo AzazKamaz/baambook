@@ -2,6 +2,8 @@
 
 The **baambook** is an application to share QR codes to other people using live sharing sessions. You can start session and scan any QR code to share it with people who joined you using URL.
 
+It is available online at https://baambook.azazkamaz.me
+
 ## Contents
 
 - [baambook](#baambook)
