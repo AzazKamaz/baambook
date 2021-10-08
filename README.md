@@ -14,7 +14,7 @@ It is available online at https://baambook.azazkamaz.me
 
 ## Artifact
 
-You can see artifact using the [link](https://docs.google.com/document/d/12yv60Psw45gbfOaJyZ6s63324abwv14J/edit#).
+See the [ARTIFACT](ARTIFACT.md) file for information about product development details.
 
 ## Authors
 
