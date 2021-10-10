@@ -1,0 +1,15 @@
+version: "3"
+services:
+  redis:
+    image: redis:6.2.6
+
+  baambook:
+    build: .
+    ports:
+      - 4000:4000
+    environment:
+      - PORT=4000
+      - HTTP_ORIGIN=//*.
+      - REDIS_URL=redis://redis:6379/
+    links:
+      - redis
