@@ -1,0 +1,32 @@
+name: Linter
+
+on: [workflow_dispatch, push, pull_request]
+
+jobs:
+  linter:
+    name: Run linter
+    runs-on: ubuntu-latest
+    container: elixir:1.12-alpine
+
+    steps:
+      - name: Prepare environment
+        run: |
+          apk add --no-cache build-base npm
+          mix local.hex --force
+          mix local.rebar --force
+
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          mix deps.get
+          mix assets.deps.get
+
+      - name: Compile backend
+        run: mix compile
+
+      - name: Run backend linter
+        run: mix lint
+
+      - name: Run frontend linter
+        run: mix assets.lint
