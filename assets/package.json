@@ -29,7 +29,6 @@
   "dependencies": {
     "nanoid": "^3.1.28",
     "phoenix": "file:../deps/phoenix",
-    "phoenix_html": "file:../deps/phoenix_html",
     "pqrs-js": "^1.2.0",
     "ress": "^4.0.0",
     "sirv-cli": "^1.0.0",

@@ -9,7 +9,6 @@ defmodule Baambook.Application do
     Baambook.Storage.new()
 
     children = [
-      BaambookWeb.Telemetry,
       {Phoenix.PubSub, name: Baambook.PubSub},
       BaambookWeb.Endpoint,
       Baambook.Random
