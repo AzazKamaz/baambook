@@ -1,4 +1,8 @@
 defmodule Baambook.Storage do
+  @moduledoc """
+  Module that stores QR Codes in :ets table and checks rights for updating them
+  """
+
   def new() do
     :ets.new(__MODULE__, [:set, :public, :named_table])
     :ok
@@ -27,6 +31,7 @@ defmodule Baambook.Storage do
     case lookup(id) do
       {_, old_token, _} when old_token != token ->
         :error
+
       _ ->
         insert(id, token, data)
         :ok

@@ -12,12 +12,17 @@ if config_env() == :prod do
   #   secret_key_base: secret_key_base
 end
 
-origin = URI.parse(case config_env() do
-  :prod ->
-    System.get_env("HTTP_ORIGIN") ||
-      raise "environment variable HTTP_ORIGIN is missing."
-  _ -> System.get_env("HTTP_ORIGIN") || "//*."
-end)
+origin =
+  URI.parse(
+    case config_env() do
+      :prod ->
+        System.get_env("HTTP_ORIGIN") ||
+          raise "environment variable HTTP_ORIGIN is missing."
+
+      _ ->
+        System.get_env("HTTP_ORIGIN") || "//*."
+    end
+  )
 
 unless origin.host do
   raise "Expected an origin with a host that is parsable by URI.parse/1"

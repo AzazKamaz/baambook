@@ -34,7 +34,8 @@ defmodule Baambook.MixProject do
     [
       {:phoenix, "~> 1.5.12"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:credo, "~> 1.5", only: :dev, runtime: false}
     ]
   end
 
@@ -42,7 +43,8 @@ defmodule Baambook.MixProject do
     [
       "assets.deps.get": ["cmd npm --prefix ./assets clean-install"],
       "assets.compile": ["cmd npm --prefix ./assets run build"],
-      "assets.watch": ["cmd npm --prefix ./assets run watch"]
+      "assets.watch": ["cmd npm --prefix ./assets run watch"],
+      lint: ["format", "credo"]
     ]
   end
 end

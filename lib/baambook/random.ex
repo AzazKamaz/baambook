@@ -1,11 +1,17 @@
 defmodule Baambook.Random do
+  @moduledoc """
+  Module that sends random QR Codes into random room
+  """
+
   use GenServer
 
   def start_link(_) do
-    interval = case Application.fetch_env(:baambook, __MODULE__) do
-      {:ok, [interval: interval]} -> interval
-      :error -> :infinity
-    end
+    interval =
+      case Application.fetch_env(:baambook, __MODULE__) do
+        {:ok, [interval: interval]} -> interval
+        :error -> :infinity
+      end
+
     GenServer.start_link(__MODULE__, interval, name: __MODULE__)
   end
 
@@ -26,6 +32,7 @@ defmodule Baambook.Random do
       "room:random",
       %{type: "update", data: Base.encode64(:crypto.strong_rand_bytes(10))}
     )
+
     {:noreply, state}
   end
 

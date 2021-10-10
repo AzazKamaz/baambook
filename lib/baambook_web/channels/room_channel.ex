@@ -1,4 +1,8 @@
 defmodule BaambookWeb.RoomChannel do
+  @moduledoc """
+  Module that defines channel interface for sending and recieving QR Codes
+  """
+
   use Phoenix.Channel
   require Baambook.Storage
 
@@ -16,6 +20,7 @@ defmodule BaambookWeb.RoomChannel do
         reply = %{"data" => Baambook.Storage.get(room_id)}
         send(self(), :after_join)
         {:ok, reply, %{socket | assigns: Map.put(socket.assigns, room_id, token)}}
+
       :error ->
         {:error, %{reason: "forbidden"}}
     end
@@ -44,7 +49,9 @@ defmodule BaambookWeb.RoomChannel do
   @impl true
   def handle_in("update", %{"data" => data}, %{:topic => "room:" <> room_id} = socket) do
     case Map.get(socket.assigns, room_id) do
-      nil -> {:reply, :error, socket}
+      nil ->
+        {:reply, :error, socket}
+
       token ->
         Baambook.Storage.update(room_id, token, data)
         reply = %{"data" => data}
