@@ -1,10 +1,11 @@
 import SvgQr from 'svgqr.js';
 import { generateSvg } from 'svgqr.js/lib/svg.js';
 import type { Route } from './types';
+import type { ScannedQrs } from 'pqrs-js';
 
 function qrMock() {
   const size = 25;
-  const mat = Array(size).fill(false).map(a => Array(size).fill(false));
+  const mat = Array(size).fill(false).map(_ => Array<boolean>(size).fill(false));
   for (let x = 0; x < 7; x++) {
     for (let y = 0; y < 7; y++) {
       const cell = x % 6 == 0 || y % 6 == 0 || !(x % 4 == 1 || y % 4 == 1);
@@ -16,7 +17,7 @@ function qrMock() {
   return {mat, size};
 }
 
-export function qr64(data?: string) {
+export function qr64(data?: string): {viewBox: string, path: string} {
   const opts = {
     corners: 'Rounded',
     radius: 0.875,
@@ -26,7 +27,7 @@ export function qr64(data?: string) {
   const svgDoc = new DOMParser().parseFromString(svg, "image/svg+xml");
   const svgEl = svgDoc.querySelector("svg") as SVGElement;
   const svgViewBox = svgEl.attributes.getNamedItem("viewBox").value;
-  const svgPathEl = svgDoc.querySelector("svg > path") as SVGPathElement;
+  const svgPathEl = svgDoc.querySelector("svg > path");
   const svgPath = svgPathEl.attributes.getNamedItem("d").value;
 
   return {
@@ -51,7 +52,7 @@ export function isInPoly(point: number[], polygon: number[][]): boolean {
 }
 
 export function getViewLink(route: Route): string {
-  let url = new URL(document.URL);
+  const url = new URL(document.URL);
   url.hash = `id=${encodeURIComponent(route.id)}&key=${encodeURIComponent(route.key)}`;
   return url.href;
 }
@@ -78,15 +79,15 @@ export class PqrsWorker {
     };
   }
 
-  call(...params: [any]): Promise<any> {
+  call(image: ImageData): Promise<ScannedQrs> {
     return new Promise((resolve, reject) => {
       const id = this.nextId++;
       this.promises.set(id, {resolve, reject});
-      this.worker.postMessage({id, params});
+      this.worker.postMessage({id, params: [image]});
     })
   }
 
-  terminate() {
+  terminate(): void {
     this.worker.terminate();
     delete this.worker;
     delete this.nextId;

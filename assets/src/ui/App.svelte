@@ -2,13 +2,14 @@
   import { nanoid } from 'nanoid/index.prod';
 
   import { route } from '../logic/route';
+  import type { Route } from '../logic/types';
 
   import Logo from './components/Logo.svelte';
   import ScanPage from './pages/Scan.svelte';
   import ShowPage from './pages/Show.svelte';
 
   let page: string;
-  $: page = $route.page;
+  $: page = ($route as Route).page;
 
   function startSession() {
     const id = encodeURIComponent(nanoid());

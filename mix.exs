@@ -44,6 +44,7 @@ defmodule Baambook.MixProject do
       "assets.deps.get": ["cmd npm --prefix ./assets clean-install"],
       "assets.compile": ["cmd npm --prefix ./assets run build"],
       "assets.watch": ["cmd npm --prefix ./assets run watch"],
+      "assets.lint": ["cmd npm --prefix ./assets run lint"],
       lint: ["format", "credo"]
     ]
   end

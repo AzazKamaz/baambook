@@ -5,6 +5,11 @@ import type { Route, Status } from "./types";
 
 export const data = writable<Status>({status: 'connecting'});
 
+// Disable some linting since 'phoenix' package is not typed
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 const socket: Socket = new Socket("/socket");
 let active: boolean = false;
 
@@ -51,8 +56,8 @@ route.subscribe((route: Route) => {
 
       data.set({status: 'connecting'});
       channel.join()
-        .receive("ok", resp => data.set({status: 'connected'}))
-        .receive("error", resp => {
+        .receive("ok", _resp => data.set({status: 'connected'}))
+        .receive("error", _resp => {
           data.set({status: 'error'});
           channel.leave();
         });
@@ -60,7 +65,7 @@ route.subscribe((route: Route) => {
   }
 });
 
-export function update(upd: string) {
+export function update(upd: string): void {
   if (get(data).status === 'connected') {
     channel.push("update", {data: upd})
       .receive("ok", (msg : {data: string | null}) => {

@@ -5,11 +5,7 @@
   import { route } from '../../logic/route';
   import { getViewLink, isInPoly, PqrsWorker } from '../../logic/utils';
   import EmptyQr from '../components/EmptyQr.svelte';
-
-  let status: string;
-  $: {
-    status = $datastore.status;
-  }
+  import type { Status } from '../../logic/types';
 
   let anim: number;
   let streamPromise: Promise<MediaStream>;
@@ -19,10 +15,17 @@
   let worker: PqrsWorker;
   let data: string | null = null;
 
+  let status: string;
+  let synced: boolean;
+  $: {
+    status = ($datastore as Status).status;
+    synced = ($datastore as Status).data === data;
+  }
+
   async function drawFrame() {
     // Safari fix: if using 'autoplay' it starts showing video only after tag switching
     if (video && video.paused && video.readyState >= 2) {
-      video.play();
+      await video.play();
     }
 
     if (video && !video.paused) {
@@ -33,7 +36,7 @@
 
       const scan = await worker.call(ctx.getImageData(0, 0, w, h));
 
-      let dataNew = null;
+      let dataNew: string = null;
       for (let i of scan.qrs) {
         if (isInPoly(
           [w * 0.5, h * 0.5],
@@ -49,10 +52,10 @@
       }
     }
 
-    anim = requestAnimationFrame(drawFrame);
+    anim = requestAnimationFrame(drawFrame as () => void);
   }
 
-  onMount(() => {
+  onMount(async () => {
     worker = new PqrsWorker();
 
     if (navigator?.mediaDevices?.getUserMedia) {
@@ -67,7 +70,8 @@
     } else {
       streamPromise = new Promise((_, reject) => reject());
     }
-    drawFrame();
+
+    await drawFrame();
   });
 
   onDestroy(() => {
@@ -76,8 +80,8 @@
     worker.terminate();
   });
 
-  function src(node, s) {
-    const update = (s) => node.srcObject !== s && (node.srcObject = s);
+  function src(node: HTMLVideoElement, s: MediaStream) {
+    const update = (s: MediaStream) => node.srcObject !== s && (node.srcObject = s);
     update(s);
     return { update };
   }
@@ -101,7 +105,7 @@
     {/await}
   </div>
 
-  <h3>Status: {status}{#if data}, {#if $datastore.data === data}synced{:else}syncing{/if}{/if}</h3>
+  <h3>Status: {status}{#if data}, {#if synced}synced{:else}syncing{/if}{/if}</h3>
 </main>
 
 <style>

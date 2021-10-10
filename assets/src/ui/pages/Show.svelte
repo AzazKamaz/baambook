@@ -1,13 +1,14 @@
 <script lang="ts">
   import { data as datastore } from '../../logic/socket';
+  import type { Status } from '../../logic/types';
   import { qr64 } from '../../logic/utils';
 
   let status: string;
   let data: string | null;
   let qr = qr64();
   $: {
-    status = $datastore.status;
-    data = $datastore.data;
+    status = ($datastore as Status).status;
+    data = ($datastore as Status).data;
     qr = qr64(data);
   }
 </script>
