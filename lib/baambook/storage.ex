@@ -3,20 +3,42 @@ defmodule Baambook.Storage do
   Module that stores QR Codes in :ets table and checks rights for updating them
   """
 
-  def new() do
+  use GenServer
+
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+  end
+
+  @impl true
+  def init(_opts) do
     :ets.new(__MODULE__, [:set, :public, :named_table])
-    :ok
+    {:ok, nil, :hibernate}
   end
 
   defp lookup(id) do
     case :ets.lookup(__MODULE__, id) do
-      [result] -> result
-      [] -> nil
+      [result] ->
+        result
+
+      [] ->
+        case Redix.command!(:redix, ["GET", id]) do
+          nil ->
+            nil
+
+          data ->
+            result = List.to_tuple(Jason.decode!(data))
+            :ets.insert(__MODULE__, result)
+            result
+        end
     end
   end
 
   defp insert(id, token, data) do
-    :ets.insert(__MODULE__, {id, token, data})
+    data = {id, token, data}
+
+    Redix.command!(:redix, ["SET", id, Jason.encode!(Tuple.to_list(data))])
+
+    :ets.insert(__MODULE__, data)
     :ok
   end
 

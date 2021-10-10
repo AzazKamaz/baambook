@@ -30,6 +30,9 @@ end
 
 IO.puts(:stdio, "HTTP_ORIGIN is " <> inspect(origin))
 
+redis_url = System.get_env("REDIS_URL") || raise "environment variable REDIS_URL is missing."
+config :baambook, Baambook.Application, redis: redis_url
+
 config :baambook, BaambookWeb.Endpoint,
   check_origin: [origin],
   http: [

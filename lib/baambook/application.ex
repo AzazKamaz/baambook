@@ -6,9 +6,11 @@ defmodule Baambook.Application do
   use Application
 
   def start(_type, _args) do
-    Baambook.Storage.new()
+    {:ok, [redis: redis_url]} = Application.fetch_env(:baambook, __MODULE__)
 
     children = [
+      {Redix, {redis_url, [name: :redix]}},
+      Baambook.Storage,
       {Phoenix.PubSub, name: Baambook.PubSub},
       BaambookWeb.Endpoint,
       Baambook.Random
